@@ -1,15 +1,15 @@
-import QueryBuilderInterface from "./QueryBuilderInterface";
+// import QueryBuilderInterface from "./QueryBuilderInterface";
 
-class QueryBuilder implements QueryBuilderInterface {
+// class QueryBuilder implements QueryBuilderInterface {
 
-    private whereConditions: Array<object>;
+//     private whereConditions: Array<object>;
 
-    public getSql(): string {
-        return '';
-    }
+//     public getSql(): string {
+//         return '';
+//     }
 
-    public where(data: object): QueryBuilderInterface
-    {
-        return this;
-    }
-}
+//     public where(data: object): QueryBuilderInterface
+//     {
+//         return this;
+//     }
+// }

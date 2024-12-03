@@ -1,33 +1,37 @@
-import { createConnection, Connection } from 'mysql2';
+import { Pool, createPool, PoolConnection } from "mysql2/promise";
 
 class MySQLConnection {
-    static #instance: MySQLConnection;
-    #connection: Connection;
+  private static instance: MySQLConnection;
+  private connection: PoolConnection | null = null;
+  private pool: Pool | null;
 
-    private constructor() {
-        this.#connection = createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE,
-        });
-        this.#connection.connect((err) => {
-            if (err) {
-                console.error('Database connection error:', err);
-                throw new Error('Failed to connect to the database');
-            }
-            console.log('Database connected successfully');
-        });
-    }
+  private constructor() {
+    this.pool = createPool({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      waitForConnections: true,
+    });
+  }
 
-    public static get instance(): MySQLConnection {
-        if (!MySQLConnection.#instance) MySQLConnection.#instance = new MySQLConnection();
-        return MySQLConnection.#instance;
-    }
+  public static async getInstance(): Promise<MySQLConnection> {
+    if (!MySQLConnection.instance)  MySQLConnection.instance = new MySQLConnection();
+    return MySQLConnection.instance;
+  }
 
-    public getConnection(): Connection {
-        return this.#connection;
+  public async getConnection(): Promise<PoolConnection> {
+    if (!this.pool) throw new Error("Connection pool is not initialized.");
+    if (!this.connection) this.connection = await this.pool.getConnection();
+    return this.connection;
+  }
+
+  public async disconnect(): Promise<void> {
+    if (this.pool) {
+      await this.pool.end();
+      this.pool = null;
     }
+  }
 }
 
 export default MySQLConnection;

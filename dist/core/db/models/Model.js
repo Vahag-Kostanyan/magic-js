@@ -14,29 +14,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const MySQLConnection_1 = __importDefault(require("../connections/MySQLConnection"));
 class Model {
-    static get() {
+    constructor() {
+        this.connection = null;
+        // static async findById()
+        // {
+        // }
+        // static async create()
+        // {
+        // }
+        // static async update()
+        // {
+        // }
+        // static async delete()
+        // {
+        // }
+    }
+    initializeConnection() {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
-            const sql = `SELECT * FROM ${this.tableName}`;
-            const [rows] = yield ((_a = this.connection) === null || _a === void 0 ? void 0 : _a.execute(sql));
-            (_b = this.connection) === null || _b === void 0 ? void 0 : _b.end();
+            if (!this.connection) {
+                const dbInstance = yield MySQLConnection_1.default.getInstance();
+                this.connection = yield dbInstance.getConnection();
+            }
         });
     }
-    static findById() {
+    get() {
         return __awaiter(this, void 0, void 0, function* () {
-        });
-    }
-    static create() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
-    }
-    static update() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
-    }
-    static delete() {
-        return __awaiter(this, void 0, void 0, function* () {
+            yield this.initializeConnection();
+            if (!this.connection)
+                throw new Error("Connection pool is not initialized.");
+            try {
+                let result = yield this.connection.query(`SELECT * FROM ${this.tableName} WHERE 1`);
+                return result[0] || null;
+            }
+            catch (error) {
+                console.error("Database query error:", error);
+                throw error;
+            }
         });
     }
 }
-Model.connection = MySQLConnection_1.default.instance.getConnection();
+exports.default = Model;
