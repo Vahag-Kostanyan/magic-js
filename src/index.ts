@@ -6,9 +6,9 @@ class migrations extends Model{
 }
 
 
-class Sessions extends Model{
-  tableName: string = 'sessions';
-}
+// class Sessions extends Model{
+//   tableName: string = 'sessions';
+// }
 
 let mode = new migrations();
 let sessions = new Sessions();

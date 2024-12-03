@@ -1,15 +1,18 @@
-// import QueryBuilderInterface from "./QueryBuilderInterface";
+import Query from "./Query";
+import QueryBuilderInterface from "./QueryBuilderInterface";
 
-// class QueryBuilder implements QueryBuilderInterface {
+class QueryBuilder implements QueryBuilderInterface {
+    private query: Query = new Query();
 
-//     private whereConditions: Array<object>;
+    public getQuery(): string {
+        return this.query.getSql();
+    }
 
-//     public getSql(): string {
-//         return '';
-//     }
+    public where(data: object): QueryBuilderInterface
+    {
+        this.query.whereConditions?.push(data);
+        return this;
+    }
+}
 
-//     public where(data: object): QueryBuilderInterface
-//     {
-//         return this;
-//     }
-// }
+export default QueryBuilder;
