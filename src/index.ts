@@ -5,13 +5,10 @@ class migrations extends Model{
   tableName: string = 'migrations';
 }
 
+let migration = new migrations();
 
-// class Sessions extends Model{
-//   tableName: string = 'sessions';
-// }
+async function main (){ 
+  let migrations = await migration.find().where({ column: 'id', action: '=', value: '1'}).getQuery();
+}
 
-let mode = new migrations();
-let sessions = new Sessions();
-
-mode.get();
-sessions.get();
+main();

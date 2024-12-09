@@ -13,9 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const MySQLConnection_1 = __importDefault(require("../connections/MySQLConnection"));
+const QueryBuilder_1 = __importDefault(require("./query/QueryBuilder"));
 class Model {
     constructor() {
         this.connection = null;
+        this.queryBuilder = new QueryBuilder_1.default();
         // static async findById()
         // {
         // }
@@ -32,25 +34,15 @@ class Model {
     initializeConnection() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.connection) {
+                this.queryBuilder.setTableName(this.tableName);
                 const dbInstance = yield MySQLConnection_1.default.getInstance();
                 this.connection = yield dbInstance.getConnection();
             }
         });
     }
-    get() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.initializeConnection();
-            if (!this.connection)
-                throw new Error("Connection pool is not initialized.");
-            try {
-                let result = yield this.connection.query(`SELECT * FROM ${this.tableName} WHERE 1`);
-                return result[0] || null;
-            }
-            catch (error) {
-                console.error("Database query error:", error);
-                throw error;
-            }
-        });
+    find() {
+        this.queryBuilder.setTableName(this.tableName);
+        return this.queryBuilder;
     }
 }
 exports.default = Model;

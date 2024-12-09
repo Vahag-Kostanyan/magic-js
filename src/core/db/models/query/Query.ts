@@ -1,18 +1,32 @@
+import { whereConditionsArrayType, WhereConditionsType } from "./types/WhereConditionsType";
+
+
 class Query {
     public tableName: string = '';
-    public whereConditions: Array<object> | null = null;
+    public whereConditions: Array<whereConditionsArrayType> | null = null;
     public selectsFields: string = '*';
+
+    constructor (){
+        this.whereConditions = [];
+    }
 
     public getSql(): string {
         let where = '1';
-        this.whereConditions?.forEach((item: object, index: number) => {
-            if(index == 0){
-                where = `${item.colument} ${item.action} ${item.value}`;
-            }else{
-                where+ = `${item.condition}  ${item.colument} ${item.action} ${item.value}`;
+        console.log(this.whereConditions);
+        
+        if(this.whereConditions?.length){
+            const [firstWhereCondition, ...whereConditions ]: whereConditionsArrayType  = this.whereConditions || [];
+            
+            where += `${firstWhereCondition.column} ${firstWhereCondition.action} ${firstWhereCondition.value}`;
+
+            if(whereConditions.length){
+                whereConditions?.forEach((item: WhereConditionsType) => {
+                    where += `${item.condition}  ${item.column} ${item.action} ${item.value}`;
+                });
             }
-        });
-        return `SELECT ${this.selectsFields} FROM ${this.tableName} WHERE ${where} ;`;
+        }
+
+        return `SELECT ${this.selectsFields} FROM ${this.tableName} WHERE ${where} `;
     }
 
 }
