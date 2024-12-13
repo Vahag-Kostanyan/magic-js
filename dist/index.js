@@ -23,7 +23,7 @@ class migrations extends Model_1.default {
 let migration = new migrations();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        let migrations = yield migration.find().where({ column: 'id', action: '=', value: '1' }).getQuery();
+        let migrations = yield migration.find().where({ column: 'id', action: '=', value: '3' }).one();
     });
 }
 main();

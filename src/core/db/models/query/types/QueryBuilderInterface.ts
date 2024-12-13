@@ -3,13 +3,13 @@ import { AndWhereCondition, OrWhereCondition, WhereConditionsType } from "./Wher
 
 interface QueryBuilderInterface {
     getQuery(): string;
-    where(data:  Omit<WhereConditionsType, 'condition'>): QueryBuilderInterface;
-    andWhere(data: Omit<AndWhereCondition, 'condition'>): QueryBuilderInterface;
-    orWhere(data: Omit<OrWhereCondition, 'condition'>): QueryBuilderInterface;
+    where(data: WhereConditionsType): QueryBuilderInterface;
+    andWhere(data: AndWhereCondition): QueryBuilderInterface;
+    orWhere(data: OrWhereCondition): QueryBuilderInterface;
     setTableName(tableName: string): QueryBuilderInterface;
-    one():  Promise<RowDataPacket | null>;
+    one(): Promise<RowDataPacket | null>;
     get(): Promise<RowDataPacket[]>
-    // select(data: object): string;
+    select(data: Array<string>): QueryBuilderInterface;
     // limit(data: object): string;
     // offset(data: object): string;
     // sort(data: object): string;

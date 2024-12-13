@@ -8,7 +8,7 @@ class migrations extends Model{
 let migration = new migrations();
 
 async function main (){ 
-  let migrations = await migration.find().where({ column: 'id', action: '=', value: '1'}).getQuery();
+  let migrations = await migration.find().where({ column: 'id', action: '=', value: '3'}).one();
 }
 
 main();

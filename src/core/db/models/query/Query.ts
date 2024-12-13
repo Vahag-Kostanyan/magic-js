@@ -3,30 +3,29 @@ import { whereConditionsArrayType, WhereConditionsType } from "./types/WhereCond
 
 class Query {
     public tableName: string = '';
-    public whereConditions: Array<whereConditionsArrayType> | null = null;
+    public whereConditions: whereConditionsArrayType | [] = [];
     public selectsFields: string = '*';
 
-    constructor (){
-        this.whereConditions = [];
+    public getSql(): string {
+        return `SELECT ${this.selectsFields} FROM ${this.tableName} ${this.getWhereSQL}`;
     }
 
-    public getSql(): string {
-        let where = '1';
-        console.log(this.whereConditions);
-        
-        if(this.whereConditions?.length){
-            const [firstWhereCondition, ...whereConditions ]: whereConditionsArrayType  = this.whereConditions || [];
-            
+    private get getWhereSQL(): string {
+        if (this.whereConditions && this.whereConditions.length > 0) {
+            let where: string = 'WHERE ';
+
+            const [firstWhereCondition, ...whereConditions]: WhereConditionsType[] = this.whereConditions;
+
             where += `${firstWhereCondition.column} ${firstWhereCondition.action} ${firstWhereCondition.value}`;
 
-            if(whereConditions.length){
+            if (whereConditions.length) {
                 whereConditions?.forEach((item: WhereConditionsType) => {
-                    where += `${item.condition}  ${item.column} ${item.action} ${item.value}`;
+                    where += `${item?.condition}  ${item.column} ${item.action} ${item.value}`;
                 });
             }
+            return where;
         }
-
-        return `SELECT ${this.selectsFields} FROM ${this.tableName} WHERE ${where} `;
+        return '';
     }
 
 }
