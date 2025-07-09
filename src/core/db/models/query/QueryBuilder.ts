@@ -3,6 +3,7 @@ import MySQLConnection from "../../connections/MySQLConnection";
 import Query from "./Query";
 import QueryBuilderInterface from "./types/QueryBuilderInterface";
 import { AndWhereCondition, OrWhereCondition, whereConditionsArrayType, WhereConditionsType } from "./types/WhereConditionsType";
+import { OrderConditionsArrayType, OrderConditionsType } from "./types/OrderConditionsType";
 
 class QueryBuilder implements QueryBuilderInterface {
     private query: Query = new Query();
@@ -30,6 +31,11 @@ class QueryBuilder implements QueryBuilderInterface {
     public select(data: Array<string>): QueryBuilderInterface {
         const { select, ...rest } = this as any;
         return rest;
+    }
+
+    public orderBy(data: OrderConditionsType): QueryBuilderInterface {
+        (this.query.orderConditions as OrderConditionsArrayType).push(data);
+        return this;
     }
 
     public getQuery(): string {

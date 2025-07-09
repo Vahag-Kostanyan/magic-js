@@ -1,13 +1,15 @@
+import { OrderConditionsArrayType, OrderConditionsType } from "./types/OrderConditionsType";
 import { whereConditionsArrayType, WhereConditionsType } from "./types/WhereConditionsType";
 
 
 class Query {
     public tableName: string = '';
     public whereConditions: whereConditionsArrayType | [] = [];
+    public orderConditions: OrderConditionsArrayType | [] = [];
     public selectsFields: string = '*';
 
     public getSql(): string {
-        return `SELECT ${this.selectsFields} FROM ${this.tableName} ${this.getWhereSQL}`;
+        return `SELECT ${this.selectsFields} FROM ${this.tableName} ${this.getWhereSQL} ${this.getOrderSQL}`;
     }
 
     private get getWhereSQL(): string {
@@ -28,6 +30,23 @@ class Query {
         return '';
     }
 
+
+    private get getOrderSQL(): string {
+        if (this.orderConditions && this.orderConditions.length > 0) {
+            let order: string = 'ORDER BY ';
+
+            if (this.orderConditions.length) {
+                this.orderConditions?.forEach((item: OrderConditionsType) => {
+                    order += `${item.column} ${item.value}, `;
+                });
+
+                return order.slice(0, -2);
+            }
+
+            return order;
+        }
+        return '';
+    }
 }
 
 export default Query;

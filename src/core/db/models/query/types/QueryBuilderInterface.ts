@@ -1,9 +1,11 @@
 import { RowDataPacket } from "mysql2";
 import { AndWhereCondition, OrWhereCondition, WhereConditionsType } from "./WhereConditionsType";
+import { OrderConditionsType } from "./OrderConditionsType";
 
 interface QueryBuilderInterface {
     getQuery(): string;
     where(data: WhereConditionsType): QueryBuilderInterface;
+    orderBy(data: OrderConditionsType): QueryBuilderInterface;
     andWhere(data: AndWhereCondition): QueryBuilderInterface;
     orWhere(data: OrWhereCondition): QueryBuilderInterface;
     setTableName(tableName: string): QueryBuilderInterface;
