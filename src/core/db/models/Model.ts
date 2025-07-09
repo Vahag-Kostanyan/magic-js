@@ -22,24 +22,23 @@ abstract class Model implements ModelInterface {
         return this.queryBuilder;
     }
 
-    // static async findById()
-    // {
+    
+    async findById(id: number)
+    {
+        return await this.queryBuilder.setTableName(this.tableName).where({ column: 'id', action: '=', value: id }).one();
+    }
 
-    // }
-
-
+    async delete(id: number)
+    {
+        this.connection?.query(`DELETE FROM ${this.tableName} WHERE id = ${id}`);
+    }
+    
     // static async create()
     // {
 
     // }
 
     // static async update()
-    // {
-
-    // }
-
-
-    // static async delete()
     // {
 
     // }

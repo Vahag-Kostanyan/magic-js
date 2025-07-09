@@ -1,34 +1,52 @@
+import { OrderConditionsArrayType, OrderConditionsType } from "./types/OrderConditionsType";
 import { whereConditionsArrayType, WhereConditionsType } from "./types/WhereConditionsType";
 
 
 class Query {
     public tableName: string = '';
-    public whereConditions: Array<whereConditionsArrayType> | null = null;
+    public whereConditions: whereConditionsArrayType | [] = [];
+    public orderConditions: OrderConditionsArrayType | [] = [];
     public selectsFields: string = '*';
 
-    constructor (){
-        this.whereConditions = [];
+    public getSql(): string {
+        return `SELECT ${this.selectsFields} FROM ${this.tableName} ${this.getWhereSQL} ${this.getOrderSQL}`;
     }
 
-    public getSql(): string {
-        let where = '1';
-        console.log(this.whereConditions);
-        
-        if(this.whereConditions?.length){
-            const [firstWhereCondition, ...whereConditions ]: whereConditionsArrayType  = this.whereConditions || [];
-            
+    private get getWhereSQL(): string {
+        if (this.whereConditions && this.whereConditions.length > 0) {
+            let where: string = 'WHERE ';
+
+            const [firstWhereCondition, ...whereConditions]: WhereConditionsType[] = this.whereConditions;
+
             where += `${firstWhereCondition.column} ${firstWhereCondition.action} ${firstWhereCondition.value}`;
 
-            if(whereConditions.length){
+            if (whereConditions.length) {
                 whereConditions?.forEach((item: WhereConditionsType) => {
-                    where += `${item.condition}  ${item.column} ${item.action} ${item.value}`;
+                    where += `${item?.condition}  ${item.column} ${item.action} ${item.value}`;
                 });
             }
+            return where;
         }
-
-        return `SELECT ${this.selectsFields} FROM ${this.tableName} WHERE ${where} `;
+        return '';
     }
 
+
+    private get getOrderSQL(): string {
+        if (this.orderConditions && this.orderConditions.length > 0) {
+            let order: string = 'ORDER BY ';
+
+            if (this.orderConditions.length) {
+                this.orderConditions?.forEach((item: OrderConditionsType) => {
+                    order += `${item.column} ${item.value}, `;
+                });
+
+                return order.slice(0, -2);
+            }
+
+            return order;
+        }
+        return '';
+    }
 }
 
 export default Query;

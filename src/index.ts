@@ -1,14 +1,10 @@
 import './configs'
-import Model from './core/db/models/Model'
-
-class migrations extends Model{
-  tableName: string = 'migrations';
-}
-
-let migration = new migrations();
+import Users from './db/models/Users';
 
 async function main (){ 
-  let migrations = await migration.find().where({ column: 'id', action: '=', value: '1'}).getQuery();
+  let query = await Users.find().where({column: 'id', action: '>', value: '2' }).orderBy({column: 'name', value: "ASC"}).orderBy({column: 'id', value: "DESC"}).getQuery();
+  console.log(query);
+  console.log(await Users.findById(1));
 }
 
 main();

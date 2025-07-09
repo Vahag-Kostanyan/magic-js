@@ -8,22 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./configs");
-const Model_1 = __importDefault(require("./core/db/models/Model"));
-class migrations extends Model_1.default {
-    constructor() {
-        super(...arguments);
-        this.tableName = 'migrations';
-    }
-}
-let migration = new migrations();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        let migrations = yield migration.find().where({ column: 'id', action: '=', value: '1' }).getQuery();
+        // let migrations = await Users.find().where({column: 'id', action: '>', value: '2' }).orderBy({column: 'name', value: "ASC"}).orderBy({column: 'id', value: "DESC"}).getQuery();
+        // console.log(await Users.delete(1));
+        // console.log(await Users.findById(1));
     });
 }
 main();

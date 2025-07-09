@@ -18,16 +18,10 @@ class Model {
     constructor() {
         this.connection = null;
         this.queryBuilder = new QueryBuilder_1.default();
-        // static async findById()
-        // {
-        // }
         // static async create()
         // {
         // }
         // static async update()
-        // {
-        // }
-        // static async delete()
         // {
         // }
     }
@@ -43,6 +37,17 @@ class Model {
     find() {
         this.queryBuilder.setTableName(this.tableName);
         return this.queryBuilder;
+    }
+    findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.queryBuilder.setTableName(this.tableName).where({ column: 'id', action: '=', value: id }).one();
+        });
+    }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            (_a = this.connection) === null || _a === void 0 ? void 0 : _a.query(`DELETE FROM ${this.tableName} WHERE id = ${id}`);
+        });
     }
 }
 exports.default = Model;
