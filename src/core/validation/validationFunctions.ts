@@ -1,14 +1,4 @@
 class ValidationFunctions {
-    static validatePhoneNumber(phone: string): boolean {
-        const regex = /^(\+?\d{1,3})?[-.\s()]?\d{3}[-.\s()]?\d{3,4}[-.\s()]?\d{4}$/;
-        return regex.test(phone);
-    }
-
-    static validateURL(url: string): boolean {
-        const regex = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/[\w.-]*)*\/?$/i;
-        return regex.test(url);
-    }
-
     static required(value: any): boolean {
         return value !== undefined && value !== null && value !== '';
     }
@@ -18,7 +8,7 @@ class ValidationFunctions {
     }
 
     static number(value: any): boolean {
-        return typeof value === 'number';
+        return typeof value === 'number' && !isNaN(value);
     }
 
     static boolean(value: any): boolean {
@@ -39,6 +29,10 @@ class ValidationFunctions {
         return typeof value === 'string' && value.length >= minLength;
     }
 
+    static exactLength(value: any, len: number): boolean {
+        return typeof value === 'string' && value.length === len;
+    }
+
     static regex(value: any, pattern: string): boolean {
         if (typeof value !== 'string') return false;
         try {
@@ -48,4 +42,18 @@ class ValidationFunctions {
             return false;
         }
     }
+
+    static in(value: any, list: string[]): boolean {
+        return list.includes(value);
+    }
+
+    static startsWith(value: any, prefix: string): boolean {
+        return typeof value === 'string' && value.startsWith(prefix);
+    }
+
+    static endsWith(value: any, suffix: string): boolean {
+        return typeof value === 'string' && value.endsWith(suffix);
+    }
 }
+
+export default ValidationFunctions;
