@@ -1,4 +1,4 @@
-type ValidationRule =
+export type ValidationRule =
   | 'string'
   | 'number'
   | 'boolean'
@@ -12,6 +12,32 @@ type ValidationRule =
   | `startsWith:${string}`
   | `endsWith:${string}`;
 
-type ValidateDataType = {
-  [fieldName: string]: ValidationRule[];
-};
+/**
+ * Defines validation rules for each field.
+ * Example:
+ * {
+ *   email: ['required', 'email'],
+ *   name: ['string', 'min:3']
+ * }
+ */
+export type ValidateDataType = Record<string, ValidationRule[]>;
+
+/**
+ * The actual data that needs to be validated.
+ * Example:
+ * {
+ *   email: "user@example.com",
+ *   name: "John"
+ * }
+ */
+export type ValidationData = Record<string, any>;
+
+/**
+ * Stores validation errors per field.
+ * Example:
+ * {
+ *   email: ["Email is invalid"],
+ *   name: ["Name is required"]
+ * }
+ */
+export type ValidationErrors = Record<string, string[]>;
