@@ -6,22 +6,34 @@ import express from 'express';
 const app = express();
 
 async function main() {
-  let query = await Users.find().where({ column: 'id', action: '>', value: '2' }).orderBy({ column: 'name', value: "ASC" }).orderBy({ column: 'id', value: "DESC" }).getQuery();
-  console.log(query);
-  console.log(await Users.findById(1));
+  // const newUser = await Users.create({
+  //   name: "test",
+  //   email: "test@example.com",
+  //   age: 20
+  // });
+  
+  // const updatedUser = await Users.update(1, {
+  //   name: "Vahagn Updated",
+  //   age: 20
+  // });
 
-  let data = {
-    name: "John Doe",
-    email: "",
-    password: "12345",
-    phone: "+37498195868"
-  }
 
-  let validation = new SignUpValidation(data);
+  // let query = await Users.find().where({ column: 'id', action: '>', value: '2' }).orderBy({ column: 'name', value: "ASC" }).orderBy({ column: 'id', value: "DESC" }).getQuery();
+  // console.log(query);
+  // console.log(await Users.findById(1));
 
-  if (!validation.validate()) {
-    console.log(validation.getErrors());
-  }
+  // let data = {
+  //   name: "John Doe",
+  //   email: "",
+  //   password: "12345",
+  //   phone: "+37498195868"
+  // }
+
+  // let validation = new SignUpValidation(data);
+
+  // if (!validation.validate()) {
+  //   console.log(validation.getErrors());
+  // }
 
 
   app.use(router);

@@ -1,7 +1,7 @@
 import { PoolConnection } from "mysql2/promise";
 import MySQLConnection from "../connections/MySQLConnection"
 
-abstract class migration {
+abstract class Migration {
     private connection: PoolConnection | null = null;
 
     private async initializeConnection(): Promise<void> {
@@ -12,4 +12,4 @@ abstract class migration {
     }
 }
 
-export default migration;
+export default Migration;
